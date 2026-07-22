@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "plugins": [
+    {
+      "id": "convex",
+      "tier": "official",
+      "displayName": "Convex",
+      "version": "1.10.0",
+      "description": "Convex for Kimi Code: scaffold a running Next.js + Convex app from one sentence, add capabilities from the Convex component ecosystem, and get a reactive, type-safe backend — plus a convex-expert, a convex-reviewer, and live error-watching.",
+      "keywords": [
+        "convex",
+        "backend",
+        "database",
+        "realtime",
+        "typescript",
+        "nextjs",
+        "mcp"
+      ],
+      "source": "./official/convex"
+    }
+  ]
+}

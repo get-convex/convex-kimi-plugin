@@ -1,0 +1,55 @@
+{
+  "name": "convex",
+  "version": "1.10.0",
+  "description": "Convex for Kimi Code: scaffold a running Next.js + Convex app from one sentence, add capabilities from the Convex component ecosystem, and get a reactive, type-safe backend — plus a convex-expert, a convex-reviewer, and live error-watching.",
+  "keywords": [
+    "convex",
+    "backend",
+    "database",
+    "realtime",
+    "typescript",
+    "nextjs",
+    "mcp"
+  ],
+  "skills": [
+    "./skills/add",
+    "./skills/agent",
+    "./skills/auth",
+    "./skills/billing",
+    "./skills/check-updates",
+    "./skills/convex-authz",
+    "./skills/convex-expert",
+    "./skills/convex-reviewer",
+    "./skills/crons",
+    "./skills/domains",
+    "./skills/env",
+    "./skills/improve-convex-plugin",
+    "./skills/migrate",
+    "./skills/quickstart",
+    "./skills/seed",
+    "./skills/test"
+  ],
+  "mcpServers": {
+    "convex-plugin": {
+      "command": "node",
+      "args": [
+        "mcp/convex-monitor-mcp.mjs"
+      ],
+      "cwd": "."
+    },
+    "convex": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "convex@latest",
+        "mcp",
+        "start"
+      ]
+    }
+  },
+  "interface": {
+    "displayName": "Convex",
+    "shortDescription": "Add a reactive, type-safe backend to JS/TS apps.",
+    "developerName": "Convex, Inc."
+  }
+}
