@@ -3,7 +3,7 @@
 // port of the Claude plugin's hooks/analytics.mjs (get-convex/
 // convex-backend-skill) so both surfaces emit the SAME event names with the
 // SAME privacy gates to the SAME PostHog project — differing only in the
-// `harness` property ("codex" here, "claude" there).
+// `harness` property ("kimi" here, "claude" there).
 //
 // Design notes:
 // - NEVER delays or breaks the server. `capture()` spawns
@@ -22,7 +22,7 @@
 //   go into event properties. Only an anonymous random device id
 //   (~/.convex/plugin-device-id — shared with the Claude plugin, so one
 //   machine is one device across harnesses), the plugin version, OS
-//   platform, the fixed harness tag ("codex"), and locally-derived booleans
+//   platform, the fixed harness tag ("kimi"), and locally-derived booleans
 //   (e.g. convex_project). snake_case event names.
 // - Any filesystem failure (unwritable home dir, missing plugin.json) falls
 //   back silently — telemetry must never surface an error to the server.
@@ -47,8 +47,8 @@ const POSTHOG_HOST =
 // harnesses (Claude, …) send the same event names to the same project, so
 // every event carries a `harness` discriminator — same vocabulary as the
 // `harness` standard property in convex-agents POSTHOG.md §3
-// (claude | codex | cursor | …). This plugin is the Codex surface.
-const HARNESS = "codex";
+// (claude | codex | cursor | kimi | …). This plugin is the Kimi surface.
+const HARNESS = "kimi";
 
 function isDisabled() {
   if (!POSTHOG_KEY) return true;
@@ -79,15 +79,14 @@ function deviceId() {
   }
 }
 
-// Plugin version, read lazily from ../.codex-plugin/plugin.json relative to
+// Plugin version, read lazily from ../kimi.plugin.json relative to
 // this script so it works wherever the plugin is installed.
 function pluginVersion() {
   try {
     const manifest = join(
       dirname(fileURLToPath(import.meta.url)),
       "..",
-      ".codex-plugin",
-      "plugin.json",
+      "kimi.plugin.json",
     );
     const version = JSON.parse(readFileSync(manifest, "utf8")).version;
     return typeof version === "string" && version ? version : "unknown";

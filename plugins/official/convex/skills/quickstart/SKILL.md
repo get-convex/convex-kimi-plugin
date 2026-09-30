@@ -89,11 +89,11 @@ hand-scaffolding: it is the canonical scaffolder and the flow depends on it.
 # publishing disabled (they ship later). To restore the goodness pass QB_PROFILE=full
 # (or individual flags, e.g. QB_PASSKEYS=1 QB_PANEL=1 QB_DOMAIN=1).
 echo "AUTH_MODE=none"   # minimal profile = no pre-baked auth; the build has no login
-# QB_HARNESS=codex tags telemetry. QB_ARGS_BASE=$BASE is CRITICAL: the slug was
+# QB_HARNESS=kimi tags telemetry. QB_ARGS_BASE=$BASE is CRITICAL: the slug was
 # generated on THIS deployment, so the bootstrap must fetch the personalized args +
 # bespoke runbook from the SAME host (its default is prod, which 404s a staging slug
 # → generic "My Convex App" defaults).
-nohup env QB_PROFILE=minimal QB_HARNESS=codex QB_ARGS_BASE="$BASE" QB_FEEDBACK_URL="$BASE/feedback" \
+nohup env QB_PROFILE=minimal QB_HARNESS=kimi QB_ARGS_BASE="$BASE" QB_FEEDBACK_URL="$BASE/feedback" \
   bash /tmp/convex-qb.sh "$(cat /tmp/convex-qb-slug 2>/dev/null)" > .quickstart-bootstrap.log 2>&1 &
 echo "SCAFFOLD_LAUNCHED log=.quickstart-bootstrap.log SLUG=$SLUG"
 ```
@@ -116,7 +116,7 @@ the bootstrap in the **FOREGROUND** — re-run the STEP 0 block but replace the
 `nohup env … &` line with a plain foreground run, same env:
 
 ```bash
-QB_PROFILE=minimal QB_HARNESS=codex QB_ARGS_BASE="$BASE" QB_FEEDBACK_URL="$BASE/feedback" bash /tmp/convex-qb.sh "$(cat /tmp/convex-qb-slug 2>/dev/null)"
+QB_PROFILE=minimal QB_HARNESS=kimi QB_ARGS_BASE="$BASE" QB_FEEDBACK_URL="$BASE/feedback" bash /tmp/convex-qb.sh "$(cat /tmp/convex-qb-slug 2>/dev/null)"
 ```
 
 It backgrounds `convex dev` / `next dev` itself and returns at `BOOTSTRAP_COMPLETE` in
@@ -191,23 +191,3 @@ until the next event, then returns one of:
 **Loop on this tool instead of ending your turn.** Each call blocks, so you stay on
 watch and react within seconds — no polling, no walking away. Keep looping until the
 user clearly says they're done.
-
-## After the run
-
-Offer `$improve-convex-plugin` so the user can send this session for an AI review that
-improves the quickstart.
-
-## On failure / friction — offer to self-report (WITH the user's permission)
-
-If the run doesn't go smoothly — you give up, hit a blocker, it takes way too long, or
-the user is frustrated — don't yield silently. **Ask first, send only on a yes**:
-
-> "That didn't go as smoothly as it should have. May I send this session — the transcript,
->  with secrets redacted — to the Convex team so they can fix what went wrong? [yes / no]"
-
-- **On yes** → run the `improve-convex-plugin` flow (ships the redacted transcript):
-  `curl -fsSL "https://basic-anteater-667.convex.site/send-transcript" | QB_HARNESS=codex bash -s -- --idea "<what broke>"`
-- **On no** → respect it; send nothing.
-- Either way, give the user an honest summary of where it got stuck.
-
-Never send the transcript without an explicit yes.
